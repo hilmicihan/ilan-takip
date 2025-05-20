@@ -1,88 +1,150 @@
-
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <title>İlan Takibi</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        h2 { margin-top: 40px; }
-        canvas { max-width: 800px; margin-bottom: 40px; }
-        table { border-collapse: collapse; width: 100%; margin-bottom: 60px; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-        th { background-color: #f2f2f2; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        select {
+            padding: 8px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-top: 30px;
+        }
+
+        canvas {
+            max-width: 800px;
+            margin-bottom: 30px;
+            display: block;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 60px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
     </style>
 </head>
+
 <body>
     <h1>İlan Takibi (Satılık / Kiralık)</h1>
-    <p>Bu sayfada ilçelere göre ilan sayılarının 15 günlük takibi yapılmaktadır.</p>
+    <p>İlçeye göre 15 günlük ilan takibi:</p>
+
+    <label for="districtSelect">İlçe Seçin:</label>
+    <select id="districtSelect">
+        <option value="">-- İlçe Seçin --</option>
+    </select>
 
     <div id="content"></div>
 
     <script>
+        let globalData = {};
+
         async function loadData() {
             const response = await fetch('ilan_verisi.json');
-            const data = await response.json();
+            globalData = await response.json();
+
+            const select = document.getElementById('districtSelect');
+            for (const key of Object.keys(globalData)) {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = key;
+                select.appendChild(option);
+            }
+
+            select.addEventListener('change', function () {
+                const selected = this.value;
+                if (selected) {
+                    renderContent(selected);
+                } else {
+                    document.getElementById('content').innerHTML = '';
+                }
+            });
+        }
+
+        function renderContent(label) {
+            const entries = globalData[label];
+            const dates = entries.map(e => e.Tarih);
+            const values = entries.map(e => e.İlanSayisi);
 
             const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML = ''; // önceki içeriği temizle
 
-            for (const [label, entries] of Object.entries(data)) {
-                const dates = entries.map(e => e.Tarih);
-                const values = entries.map(e => e.İlanSayisi);
+            // Başlık
+            const header = document.createElement('h2');
+            header.textContent = label;
+            contentDiv.appendChild(header);
 
-                // Başlık
-                const header = document.createElement('h2');
-                header.textContent = label;
-                contentDiv.appendChild(header);
+            // Grafik
+            const canvas = document.createElement('canvas');
+            contentDiv.appendChild(canvas);
 
-                // Grafik
-                const canvas = document.createElement('canvas');
-                contentDiv.appendChild(canvas);
-
-                new Chart(canvas.getContext('2d'), {
-                    type: 'line',
-                    data: {
-                        labels: dates,
-                        datasets: [{
-                            label: label,
-                            data: values,
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                            fill: true,
-                            tension: 0.3
-                        }]
+            new Chart(canvas.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: label,
+                        data: values,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
                     },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: { display: false }
-                        },
-                        scales: {
-                            y: { beginAtZero: true }
-                        }
+                    scales: {
+                        y: { beginAtZero: true }
                     }
-                });
+                }
+            });
 
-                // Tablo
-                const table = document.createElement('table');
-                const thead = document.createElement('thead');
-                const tbody = document.createElement('tbody');
+            // Tablo
+            const table = document.createElement('table');
+            const thead = document.createElement('thead');
+            const tbody = document.createElement('tbody');
 
-                thead.innerHTML = '<tr><th>Tarih</th><th>İlan Sayısı</th></tr>';
-                entries.forEach(e => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `<td>${e.Tarih}</td><td>${e.İlanSayisi}</td>`;
-                    tbody.appendChild(row);
-                });
+            thead.innerHTML = '<tr><th>Tarih</th><th>İlan Sayısı</th></tr>';
+            entries.forEach(e => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${e.Tarih}</td><td>${e.İlanSayisi}</td>`;
+                tbody.appendChild(row);
+            });
 
-                table.appendChild(thead);
-                table.appendChild(tbody);
-                contentDiv.appendChild(table);
-            }
+            table.appendChild(thead);
+            table.appendChild(tbody);
+            contentDiv.appendChild(table);
         }
 
         loadData();
     </script>
 </body>
+
 </html>

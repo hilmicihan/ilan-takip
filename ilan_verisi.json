@@ -56,14 +56,20 @@
         }
     ],
     "Kepez - Toplam - Satılık": [
+      
+        {
+            "Tarih": "2025-05-16",
+            "İlanSayisi": 9262
+        },
         {
             "_link": "https://www.sahibinden.com/satilik-daire/antalya-kepez",
             "Tarih": "2025-05-19",
             "İlanSayisi": 9262
         },
         {
-            "Tarih": "2025-05-16",
-            "İlanSayisi": 9262
+            "_link": "https://www.sahibinden.com/satilik-daire/antalya-kepez",
+            "Tarih": "2025-05-20",
+            "İlanSayisi": 9471
         }
     ],
     "Kepez - Varsak - Kiralık": [
