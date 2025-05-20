@@ -20,7 +20,12 @@
         {
             "Tarih": "2025-05-16",
             "İlanSayisi": 480
-        }
+        },
+        {
+            "_link": "https://www.sahibinden.com/kiralik/antalya-kepez-ahatli",
+            "Tarih": "2025-05-20",
+            "İlanSayisi": 514
+        },
     ],
     "Kepez - Ahatlı - Satılık": [
         {
@@ -46,14 +51,19 @@
     ],
     "Kepez - Toplam - Kiralık": [
         {
+            "Tarih": "2025-05-16",
+            "İlanSayisi": 1633
+        },
+        {
             "_link": "https://www.sahibinden.com/kiralik/antalya-kepez",
             "Tarih": "2025-05-19",
             "İlanSayisi": 1633
         },
         {
             "Tarih": "2025-05-16",
-            "İlanSayisi": 1633
+            "İlanSayisi": 1670
         }
+        
     ],
     "Kepez - Toplam - Satılık": [
       
@@ -85,13 +95,17 @@
     ],
     "Kepez - Varsak - Satılık": [
         {
+            "Tarih": "2025-05-16",
+            "İlanSayisi": 2843
+        },
+        {
             "_link": "https://www.sahibinden.com/satilik-daire/antalya-kepez-varsak",
             "Tarih": "2025-05-19",
             "İlanSayisi": 2843
         },
         {
-            "Tarih": "2025-05-16",
-            "İlanSayisi": 2843
+            "Tarih": "2025-05-20",
+            "İlanSayisi": 2920
         }
     ],
 
@@ -108,12 +122,17 @@
     "Muratpaşa - Toplam - Satılık": [
         {
             "_link": "https://www.sahibinden.com/satilik-daire/antalya-muratpasa",
+            "Tarih": "2025-05-16",
+            "İlanSayisi": 5570
+        },
+        {
             "Tarih": "2025-05-19",
             "İlanSayisi": 5570
         },
         {
-            "Tarih": "2025-05-16",
-            "İlanSayisi": 5570
+            "_link": "https://www.sahibinden.com/satilik-daire/antalya-muratpasa",
+            "Tarih": "2025-05-19",
+            "İlanSayisi": 5655
         }
     ],
     "Muratpaşa - Çarşı - Satılık": [
