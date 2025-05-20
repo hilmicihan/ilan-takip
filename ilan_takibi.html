@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>İlan Takibi</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h2 { margin-top: 40px; }
+        canvas { max-width: 800px; margin-bottom: 40px; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 60px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>İlan Takibi (Satılık / Kiralık)</h1>
+    <p>Bu sayfada ilçelere göre ilan sayılarının 15 günlük takibi yapılmaktadır.</p>
+
+    <div id="content"></div>
+
+    <script>
+        async function loadData() {
+            const response = await fetch('ilan_verisi.json');
+            const data = await response.json();
+
+            const contentDiv = document.getElementById('content');
+
+            for (const [label, entries] of Object.entries(data)) {
+                const dates = entries.map(e => e.Tarih);
+                const values = entries.map(e => e.İlanSayisi);
+
+                // Başlık
+                const header = document.createElement('h2');
+                header.textContent = label;
+                contentDiv.appendChild(header);
+
+                // Grafik
+                const canvas = document.createElement('canvas');
+                contentDiv.appendChild(canvas);
+
+                new Chart(canvas.getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: dates,
+                        datasets: [{
+                            label: label,
+                            data: values,
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            fill: true,
+                            tension: 0.3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+
+                // Tablo
+                const table = document.createElement('table');
+                const thead = document.createElement('thead');
+                const tbody = document.createElement('tbody');
+
+                thead.innerHTML = '<tr><th>Tarih</th><th>İlan Sayısı</th></tr>';
+                entries.forEach(e => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${e.Tarih}</td><td>${e.İlanSayisi}</td>`;
+                    tbody.appendChild(row);
+                });
+
+                table.appendChild(thead);
+                table.appendChild(tbody);
+                contentDiv.appendChild(table);
+            }
+        }
+
+        loadData();
+    </script>
+</body>
+</html>
